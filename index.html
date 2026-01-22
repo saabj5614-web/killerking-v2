@@ -3,276 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KILLER KING | v2.3 PREMIUM</title>
+    <title>KILLER KING v3.5 | MEGA PREMIUM</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background: black; overflow-x: hidden; font-family: 'Courier New', monospace; color: #00ff41; }
-        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.5; }
+        * { margin: 0; padding: 0; box-sizing: border-box; outline: none; }
+        body { background: #000; color: #00ff41; font-family: 'Courier New', monospace; overflow-x: hidden; }
+        canvas { position: fixed; top: 0; left: 0; z-index: -1; opacity: 0.4; }
         
-        /* Scanline & Overlay */
+        /* CRT Scanline Effect */
         body::before {
             content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
-            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), 
-                        linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
-            z-index: 2; background-size: 100% 2px, 3px 100%; pointer-events: none;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), 
+                        linear-gradient(90deg, rgba(255, 0, 0, 0.03), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.03));
+            z-index: 10; background-size: 100% 2px, 3px 100%; pointer-events: none;
         }
 
-        /* NEW OPTIMIZED GLITCH TITLE */
-        .killer-title {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #fff;
-            text-transform: uppercase;
-            letter-spacing: 10px;
-            position: relative;
-            display: inline-block;
-            text-shadow: 0 0 10px #00ff41, 0 0 20px #00ff41, 0 0 40px #00ff41;
-            animation: glitch 2.5s infinite;
-        }
-        @keyframes glitch {
-            0% { transform: skew(0deg); text-shadow: 2px 2px #ff00ff, -2px -2px #00ffff; }
-            10% { transform: skew(-3deg); }
-            20% { transform: skew(3deg); text-shadow: -2px 0 red, 2px 0 blue; }
-            30% { transform: skew(0deg); }
-            100% { transform: skew(0deg); }
-        }
-        .title-underline {
-            width: 80%; height: 3px; background: linear-gradient(90deg, transparent, #00ff41, transparent);
-            margin: 10px auto 30px; box-shadow: 0 0 15px #00ff41;
-        }
-
-        /* Login UI */
-        #login-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: black; z-index: 100; display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-        }
-        .login-box {
-            border: 2px solid #00ff41; padding: 30px; background: rgba(0,0,0,0.9);
-            box-shadow: 0 0 30px #00ff41; text-align: center; width: 350px;
-        }
-        input {
-            background: rgba(0, 255, 65, 0.1); border: 1px solid #00ff41; color: #00ff41;
-            padding: 12px; margin: 10px 0; width: 100%; outline: none; text-align: center; font-weight: bold;
-        }
-        .toggle-btn {
-            position: absolute; right: 10px; top: 22px; cursor: pointer;
-            font-size: 10px; color: #00ff41; border: 1px solid #00ff41; padding: 2px 5px;
-        }
-
-        /* Dashboard */
-        #main-content { display: none; position: relative; z-index: 1; text-align: center; padding: 20px; }
-        .section-box { background: rgba(0, 0, 0, 0.9); border: 2px solid #00ff41; padding: 25px; margin: 20px auto; max-width: 650px; box-shadow: 0 0 15px rgba(0,255,65,0.2); }
-        .admin-box { border-color: cyan; display: none; box-shadow: 0 0 20px cyan; }
+        .container { display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 20px; position: relative; z-index: 5; }
         
-        .btn { display: block; padding: 15px; margin: 10px auto; border: 1px solid #00ff41; color: #00ff41; text-decoration: none; font-weight: bold; cursor: pointer; width: 85%; background: rgba(0,255,65,0.05); transition: 0.3s; text-transform: uppercase; }
-        .btn:hover { background: #00ff41; color: black; box-shadow: 0 0 20px #00ff41; }
+        .box {
+            background: rgba(0, 5, 0, 0.95); border: 1px solid #00ff41;
+            box-shadow: 0 0 30px rgba(0, 255, 65, 0.2); padding: 25px;
+            width: 100%; max-width: 450px; text-align: center;
+        }
+
+        .glitch-title { font-size: 3rem; font-weight: bold; text-shadow: 3px 3px #ff0000; animation: glitch 0.8s infinite alternate; margin-bottom: 20px; }
+        @keyframes glitch { 0% { opacity: 1; transform: scale(1); } 100% { opacity: 0.8; transform: scale(1.02); } }
+
+        input, .btn {
+            width: 100%; padding: 14px; margin: 10px 0; border: 1px solid #00ff41;
+            background: rgba(0, 255, 65, 0.05); color: #00ff41; font-weight: bold; cursor: pointer; text-transform: uppercase;
+        }
+        .btn:hover { background: #00ff41; color: #000; box-shadow: 0 0 20px #00ff41; }
         
-        #download-area { display: none; margin-top: 20px; padding: 20px; border: 2px dashed gold; }
-        .delete-btn { background: #ff000033 !important; color: red !important; width: 50px !important; border-color: red !important; display: inline-block; }
-        .badge { background: red; color: white; padding: 2px 8px; font-size: 10px; border-radius: 5px; position: absolute; margin-top: -10px; z-index: 5; }
-        .setting-row { display: flex; gap: 5px; margin-bottom: 10px; }
+        /* Admin Section Styling */
+        .admin-section { border: 1px dashed #00d9ff; padding: 15px; margin: 15px 0; }
+        .del-all-btn { background: rgba(255, 0, 0, 0.2) !important; border-color: red !important; color: red !important; font-size: 10px; margin-top: 5px; }
+        .del-all-btn:hover { background: red !important; color: white !important; }
+
+        #tools-list { margin-top: 15px; text-align: left; }
+        .tool-card { border: 1px solid #333; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,0.02); }
+        .tool-link { color: gold; text-decoration: none; font-weight: bold; }
     </style>
 </head>
 <body>
 
     <canvas id="matrix"></canvas>
 
-    <div id="login-screen">
-        <div style="margin-bottom: 40px; text-align: center;">
-            <h1 class="killer-title">KILLER KING</h1>
-            <div class="title-underline"></div>
-        </div>
-        <div class="login-box" id="lbox">
-            <h3 style="margin-bottom: 10px;">[ TERMINAL LOGIN ]</h3>
-            <input type="text" id="username" placeholder="USERNAME">
-            <div style="position: relative; width: 100%;">
-                <input type="password" id="password" placeholder="PASSWORD">
-                <span class="toggle-btn" onclick="togglePass()" id="tglText">SHOW</span>
-            </div>
-            <button class="btn" onclick="validateLogin()">INITIALIZE SYSTEM</button>
-            <p id="status-msg" style="font-size: 10px; margin-top: 10px; color: yellow;">CONNECTING TO CLOUD...</p>
+    <div class="container" id="screen-login">
+        <h1 class="glitch-title">KILLER KING</h1>
+        <div class="box">
+            <h4 style="letter-spacing: 2px; margin-bottom: 10px;">SYSTEM AUTHENTICATION</h4>
+            <input type="text" id="auth-key" placeholder="ENTER ACCESS KEY">
+            <button class="btn" onclick="handleLogin()">INITIALIZE</button>
+            <p style="font-size: 10px; color: #555; margin-top: 10px;">MASTER LOGIN: killer786</p>
         </div>
     </div>
 
-    <div id="main-content">
-        <h1 class="killer-title" style="font-size: 3rem;">KILLER KING</h1>
-        <div class="title-underline" style="width: 50%;"></div>
-        
-        <div id="admin-panel" class="section-box admin-box">
-            <h3 style="color: cyan; margin-bottom: 20px;">[ ROOT ADMIN SETTINGS ]</h3>
+    <div class="container" id="screen-admin" style="display: none;">
+        <div class="box" style="border-color: #00d9ff;">
+            <h2 style="color: #00d9ff; margin-bottom: 15px;">ROOT CONTROL</h2>
             
-            <div style="border: 1px solid #222; padding: 15px; margin-bottom: 20px;">
-                <p style="color: cyan; font-size: 12px; margin-bottom: 10px;">UPLOAD NEW TOOL</p>
-                <input type="text" id="tool-name" placeholder="Tool Name">
-                <input type="text" id="tool-link" placeholder="Download URL">
-                <button class="btn" onclick="addNewLink()" style="border-color: cyan; color: cyan;">SEND TO CLOUD</button>
+            <div class="admin-section">
+                <p style="font-size: 11px; margin-bottom: 5px;">KEY GENERATION (HOURS)</p>
+                <input type="number" id="key-hours" placeholder="Validity Hours" value="24">
+                <button class="btn" style="border-color: #00d9ff; color: #00d9ff;" onclick="generateKey()">GENERATE & COPY</button>
+                <div id="key-result" style="font-size: 12px; margin-top: 5px; color: yellow; font-weight: bold;"></div>
+                <button class="btn del-all-btn" onclick="deleteAllKeys()">WIPE ALL KEYS FROM DATABASE</button>
             </div>
 
-            <div style="border: 1px solid #222; padding: 15px;">
-                <p style="color: #ff00ff; font-size: 12px; margin-bottom: 10px;">SENSITIVE: CHANGE PASSWORDS</p>
-                <div class="setting-row">
-                    <input type="text" id="new-adm-u" placeholder="Admin User">
-                    <input type="text" id="new-adm-p" placeholder="Admin Pass">
-                </div>
-                <div class="setting-row">
-                    <input type="text" id="new-usr-u" placeholder="User Name">
-                    <input type="text" id="new-usr-p" placeholder="User Pass">
-                </div>
-                <button class="btn" onclick="updateCredentials()" style="border-color: #ff00ff; color: #ff00ff;">SAVE NEW PASSWORDS</button>
+            <div class="admin-section" style="border-color: #00ff41;">
+                <p style="font-size: 11px; margin-bottom: 5px;">UPLOAD TOOL TO CLOUD</p>
+                <input type="text" id="tool-name" placeholder="Tool Display Name">
+                <input type="text" id="tool-url" placeholder="Direct Download URL">
+                <button class="btn" onclick="uploadTool()">SEND TO DATABASE</button>
             </div>
+            
+            <button class="btn" onclick="location.reload()" style="width: auto; padding: 5px 20px; font-size: 12px;">EXIT TERMINAL</button>
         </div>
+    </div>
 
-        <div class="section-box">
-            <h3 id="lock-status" style="color: #ff4d4d; margin-bottom: 20px;">[ 🔒 DATABASE LOCKED ]</h3>
-            <div id="action-buttons">
-                <a href="https://youtube.com/@mabi-king" target="_blank" class="btn" onclick="checkStep(1)">STEP 1: SUBSCRIBE YOUTUBE</a>
-                <a href="https://chat.whatsapp.com/YOUR_LINK" target="_blank" class="btn" onclick="checkStep(2)">STEP 2: JOIN TELEGRAM/WA</a>
+    <div class="container" id="screen-dashboard" style="display: none;">
+        <h1 class="glitch-title" style="font-size: 2.2rem;">DASHBOARD</h1>
+        <div class="box">
+            <div id="lock-state">
+                <h3 style="color: #ff4d4d; margin-bottom: 20px;">[ DATABASE LOCKED ]</h3>
+                
+                <button class="btn" onclick="openLink('Https://www.youtube.com/@Yaseentechofficial')">1. SUBSCRIBE YOUTUBE</button>
+                <button class="btn" onclick="openLink('https://whatsapp.com/channel/0029Vb6dLhn0gcfKZBVcAj2C')">2. JOIN WHATSAPP CHANNEL</button>
+                
+                <button class="btn" style="border-color: gold; color: gold; margin-top: 20px;" onclick="verifySteps()">VERIFY & UNLOCK</button>
             </div>
-            <div id="download-area">
+
+            <div id="unlock-state" style="display: none;">
+                <h3 style="color: #00ff41; margin-bottom: 15px;">[ DATABASE UNLOCKED ]</h3>
                 <div id="tools-list"></div>
+                <p style="font-size: 10px; color: #555; margin-top: 20px;">Status: All systems operational.</p>
             </div>
         </div>
-        
-        <p style="color: #00ff41; font-size: 12px; margin-top: 30px;">
-            TERMINAL STATUS: ONLINE | ACTIVE USERS: <span id="counter">--</span>
-        </p>
     </div>
 
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
-        import { getFirestore, collection, addDoc, deleteDoc, doc, onSnapshot, query, orderBy, setDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+        import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, onSnapshot, query, orderBy, setDoc, getDoc, writeBatch } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
 
+        // Firebase Config (Keep your existing config)
         const firebaseConfig = {
           apiKey: "AIzaSyCpvGpYmqgP8gQsjZ0SZCTsJDdjZ1-u9vQ",
           authDomain: "killerkingcloud-804.firebaseapp.com",
           projectId: "killerkingcloud-804",
           storageBucket: "killerkingcloud-804.firebasestorage.app",
           messagingSenderId: "719473974088",
-          appId: "1:719473974088:web:b13c1d79aaebfbb30eb17d",
-          measurementId: "G-BMTMGM46V0"
+          appId: "1:719473974088:web:b13c1d79aaebfbb30eb17d"
         };
 
         const app = initializeApp(firebaseConfig);
         const db = getFirestore(app);
 
-        window.validateLogin = validateLogin;
-        window.addNewLink = addNewLink;
-        window.deleteTool = deleteTool;
-        window.checkStep = checkStep;
-        window.togglePass = togglePass;
-        window.updateCredentials = updateCredentials;
+        // --- AUTHENTICATION ---
+        window.handleLogin = async () => {
+            const keyInput = document.getElementById('auth-key').value.trim();
+            if (!keyInput) return alert("Please enter a key.");
 
-        let creds = { adm_u: "killerking", adm_p: "killer786", usr_u: "user", usr_p: "king123" };
-        let isAdmin = false;
-
-        // SYNC PASSWORDS FROM CLOUD
-        onSnapshot(doc(db, "settings", "passwords"), (docSnap) => {
-            if (docSnap.exists()) {
-                creds = docSnap.data();
-                document.getElementById('status-msg').innerText = "CLOUD SECURE";
-                document.getElementById('new-adm-u').value = creds.adm_u;
-                document.getElementById('new-adm-p').value = creds.adm_p;
-                document.getElementById('new-usr-u').value = creds.usr_u;
-                document.getElementById('new-usr-p').value = creds.usr_p;
+            // Master Bypass
+            if (keyInput === "killer786") {
+                showScreen('screen-admin');
+                return;
             }
-        });
 
-        async function updateCredentials() {
-            const data = {
-                adm_u: document.getElementById('new-adm-u').value,
-                adm_p: document.getElementById('new-adm-p').value,
-                usr_u: document.getElementById('new-usr-u').value,
-                usr_p: document.getElementById('new-usr-p').value
-            };
-            try {
-                await setDoc(doc(db, "settings", "passwords"), data);
-                alert("SUCCESS: Passwords updated on Cloud!");
-            } catch(e) { alert("ERROR: Cloud Sync Failed!"); }
-        }
+            const keyRef = doc(db, "keys", keyInput);
+            const snap = await getDoc(keyRef);
 
-        function togglePass() {
-            const p = document.getElementById('password');
-            const t = document.getElementById('tglText');
-            if(p.type === "password") { p.type = "text"; t.innerText = "HIDE"; }
-            else { p.type = "password"; t.innerText = "SHOW"; }
-        }
+            if (snap.exists()) {
+                if (Date.now() < snap.data().expiry) {
+                    showScreen('screen-dashboard');
+                } else {
+                    alert("THIS KEY HAS EXPIRED!");
+                }
+            } else {
+                alert("INVALID ACCESS KEY!");
+            }
+        };
 
-        function validateLogin() {
-            const u = document.getElementById('username').value;
-            const p = document.getElementById('password').value;
-            if (u === creds.adm_u && p === creds.adm_p) { isAdmin = true; startSystem(); }
-            else if (u === creds.usr_u && p === creds.usr_p) { isAdmin = false; startSystem(); }
-            else { alert("ACCESS DENIED!"); }
-        }
+        // --- ADMIN: KEY GENERATOR ---
+        window.generateKey = async () => {
+            const hrs = document.getElementById('key-hours').value || 24;
+            const newKey = "KING-" + Math.random().toString(36).substring(2, 9).toUpperCase();
+            const expiryTime = Date.now() + (hrs * 60 * 60 * 1000);
 
-        function startSystem() {
-            document.getElementById('login-screen').style.display = 'none';
-            document.getElementById('main-content').style.display = 'block';
-            if(isAdmin) document.getElementById('admin-panel').style.display = 'block';
-            initMatrix();
-            setInterval(() => {
-                document.getElementById('counter').innerText = Math.floor(Math.random() * (190 - 140) + 140);
-            }, 2500);
-        }
+            await setDoc(doc(db, "keys", newKey), { expiry: expiryTime });
+            
+            document.getElementById('key-result').innerText = "KEY: " + newKey;
+            navigator.clipboard.writeText(newKey);
+            alert("Key Generated & Copied!");
+        };
 
-        async function addNewLink() {
+        // --- ADMIN: DELETE ALL KEYS ---
+        window.deleteAllKeys = async () => {
+            if(confirm("Are you sure you want to delete ALL keys from the database?")) {
+                const querySnapshot = await getDocs(collection(db, "keys"));
+                const batch = writeBatch(db);
+                querySnapshot.forEach((d) => batch.delete(d.ref));
+                await batch.commit();
+                alert("All keys have been wiped.");
+            }
+        };
+
+        // --- ADMIN: UPLOAD TOOL ---
+        window.uploadTool = async () => {
             const name = document.getElementById('tool-name').value;
-            const link = document.getElementById('tool-link').value;
-            if(name && link) {
-                await addDoc(collection(db, "tools"), { name, link, timestamp: new Date() });
-                alert("TOOL ADDED!");
+            const url = document.getElementById('tool-url').value;
+            if(name && url) {
+                await addDoc(collection(db, "tools"), { name, url, time: Date.now() });
+                alert("Tool Added to Cloud!");
+                document.getElementById('tool-name').value = '';
+                document.getElementById('tool-url').value = '';
             }
-        }
+        };
 
-        async function deleteTool(id) {
-            if(confirm("DELETE?")) { await deleteDoc(doc(db, "tools", id)); }
-        }
+        // --- DASHBOARD: LOCK SYSTEM ---
+        let clickTracker = 0;
+        window.openLink = (url) => {
+            window.open(url, '_blank');
+            clickTracker++;
+        };
 
-        function renderTools() {
-            const list = document.getElementById('tools-list');
-            const q = query(collection(db, "tools"), orderBy("timestamp", "desc"));
-            onSnapshot(q, (snapshot) => {
+        window.verifySteps = () => {
+            if (clickTracker >= 2) {
+                document.getElementById('lock-state').style.display = 'none';
+                document.getElementById('unlock-state').style.display = 'block';
+                fetchTools();
+            } else {
+                alert("Error: Complete Step 1 and Step 2 first!");
+            }
+        };
+
+        function fetchTools() {
+            const q = query(collection(db, "tools"), orderBy("time", "desc"));
+            onSnapshot(q, (snap) => {
+                const list = document.getElementById('tools-list');
                 list.innerHTML = "";
-                snapshot.forEach((docPtr) => {
-                    const tool = docPtr.data();
-                    const div = document.createElement('div');
-                    div.style.position = "relative";
-                    div.innerHTML = `<span class="badge">PRO</span>
-                                     <a href="${tool.link}" target="_blank" class="btn" style="color:gold; border-color:gold; width:75%; display:inline-block;">📥 ${tool.name}</a>
-                                     ${isAdmin ? `<button class="btn delete-btn" onclick="deleteTool('${docPtr.id}')">X</button>` : ''}`;
-                    list.appendChild(div);
+                snap.forEach(d => {
+                    const t = d.data();
+                    list.innerHTML += `
+                        <div class="tool-card">
+                            <span style="color:#00ff41; font-weight:bold;">${t.name}</span>
+                            <a href="${t.url}" target="_blank" class="tool-link">[GET TOOL]</a>
+                        </div>`;
                 });
             });
         }
 
-        let s1 = false, s2 = false;
-        function checkStep(n) {
-            if(n===1) s1 = true; if(n===2) s2 = true;
-            if(s1 && s2) {
-                document.getElementById('lock-status').innerText = "[ 🔓 DATABASE UNLOCKED ]";
-                document.getElementById('lock-status').style.color = "#00ff41";
-                document.getElementById('download-area').style.display = 'block';
-                renderTools();
-            }
+        // --- UI UTILS ---
+        function showScreen(id) {
+            document.querySelectorAll('.container').forEach(s => s.style.display = 'none');
+            document.getElementById(id).style.display = 'flex';
         }
 
-        function initMatrix() {
-            const canvas = document.getElementById('matrix');
-            const ctx = canvas.getContext('2d');
-            canvas.width = window.innerWidth; canvas.height = window.innerHeight;
-            const drops = Array(Math.floor(canvas.width/16)).fill(1);
-            function draw() {
-                ctx.fillStyle = "rgba(0, 0, 0, 0.05)"; ctx.fillRect(0, 0, canvas.width, canvas.height);
-                ctx.fillStyle = "#0F0"; ctx.font = "16px monospace";
-                drops.forEach((y, i) => {
-                    ctx.fillText(String.fromCharCode(Math.random()*128), i*16, y*16);
-                    if(y*16 > canvas.height && Math.random() > 0.975) drops[i] = 0;
-                    drops[i]++;
-                });
-            }
-            setInterval(draw, 35);
+        // Matrix Effect
+        const canvas = document.getElementById('matrix');
+        const ctx = canvas.getContext('2d');
+        canvas.width = window.innerWidth; canvas.height = window.innerHeight;
+        const columns = Math.floor(canvas.width / 20);
+        const drops = Array(columns).fill(1);
+
+        function drawMatrix() {
+            ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#0F0";
+            ctx.font = "15px monospace";
+            drops.forEach((y, i) => {
+                const text = String.fromCharCode(Math.random() * 128);
+                ctx.fillText(text, i * 20, y * 20);
+                if (y * 20 > canvas.height && Math.random() > 0.975) drops[i] = 0;
+                drops[i]++;
+            });
         }
+        setInterval(drawMatrix, 35);
     </script>
 </body>
 </html>
